@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<report-database>
+ <description>NanoSOI DRC Report</description>
+ <original-file>C:\Users\LucasGabriel\OneDrive\Documentos\GitHub\colab-layout\circuito-lucas\Components_Lucas\nanotools_gc_TE_8.gds</original-file>
+ <generator>drc: script='C:/Users/LucasGabriel/KLayout/tech/NanoSOI_PDK_v8/tech/drc\\NanoSOI_Silicon_DRC_Report_v10.lydrc'</generator>
+ <top-cell>TOP</top-cell>
+ <tags>
+ </tags>
+ <categories>
+  <category>
+   <name>pin_layer</name>
+   <description>Warning: Features on Layer 1/10 will NOT be printed on final design</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>black_box</name>
+   <description>Warning: Features on Layer 998 are a black box cell only, not ready for fabrication</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>window</name>
+   <description>Warning: Features on Layer 6 require approval from ANT</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>si_width</name>
+   <description>Silicon width is less than 60 nm</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>si_space</name>
+   <description>Silicon spacing is less than 70 nm</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>direct_width</name>
+   <description>Direct metal width is less than 5 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>direct_space</name>
+   <description>Direct metal spacing is less than 10 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>tiw_width</name>
+   <description>TiW width is less than 3 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>tiw_space</name>
+   <description>TiW spacing is less than 3 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>au_width</name>
+   <description>Gold width is less than 5 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>au_space</name>
+   <description>Gold spacing is less than 8 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>bp_open_width</name>
+   <description>Bond pad open width is less than 10 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>bp_open_space</name>
+   <description>Bond pad open spacing is less than 10 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>sem_width</name>
+   <description>SEM width is less than 500 nm</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>bp_not_in_au</name>
+   <description>Bond pad open is enclosed within Gold layer by 5 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>tiw_au_space</name>
+   <description>Spacing between discrete TiW and Au features is less than 5 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>dicing_width</name>
+   <description>Dicing lane width is less than 100 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>dicing_space</name>
+   <description>Spacing between dicing lane and feature is less than 50 microns</description>
+   <categories>
+   </categories>
+  </category>
+  <category>
+   <name>design_area</name>
+   <description>Features outside 9 x 9 mm design area, verify design is centered at (0,0)</description>
+   <categories>
+   </categories>
+  </category>
+ </categories>
+ <cells>
+  <cell>
+   <name>TOP</name>
+   <variant/>
+   <layout-name/>
+   <references>
+   </references>
+  </cell>
+ </cells>
+ <items>
+  <item>
+   <tags/>
+   <category>pin_layer</category>
+   <cell>TOP</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>edge-pair: (-0.05,-0.25;-0.05,0.25)|(0.05,0.25;0.05,-0.25)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>pin_layer</category>
+   <cell>TOP</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>edge-pair: (0.05,-0.25;-0.05,-0.25)|(-0.05,0.25;0.05,0.25)</value>
+   </values>
+  </item>
+ </items>
+</report-database>
