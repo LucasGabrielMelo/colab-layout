@@ -2,7 +2,7 @@
 
 Repositório de cooperação do time para organizar vários circuitos em um único layout de fabricação na [nanoTOOLS](https://www.appliednt.com/nanosoi/sys/) (Applied Nanotools, processo NanoSOI).
 
-O **layout principal** da corrida está em [`circuito-lucivaldo-v1`](circuito-lucivaldo-v1).
+O **layout principal** da corrida está em [`circuito-lucivaldo-v2`](circuito-lucivaldo-v2).
 
 ## Prazos desta corrida (Silicon MPW)
 
@@ -21,7 +21,7 @@ Pedidos de customização extra (FaML, Layer 6 etc.) devem ser feitos **duas sem
 1. Cada pessoa faz um **fork** deste repositório.
 2. Sobe o próprio layout em uma **pasta separada**.
 3. Passa o circuito pelo **DRC da nanoTOOLS**.
-4. Depois de validar, inclui o circuito no **layout principal** de Lucivaldo (`circuito-lucivaldo-v1`).
+4. Depois de validar, inclui o circuito no **layout principal** de Lucivaldo (`circuito-lucivaldo-v2`).
 
 ## PDK
 
@@ -42,9 +42,9 @@ Quem ainda não tiver o PDK pode solicitar por e-mail: [jose.arcanjo@ee.ufcg.edu
 Na pasta do circuito:
 
 ```powershell
-cd circuito-lucivaldo-v1
+cd circuito-lucivaldo-v2
 uv sync
 uv run python compile.py
 ```
 
-GDS gerado: `CircuitoLucivaldoV1.gds` no mesmo diretório.
+GDS gerado: `CircuitoLucivaldoV2.gds` no mesmo diretório.

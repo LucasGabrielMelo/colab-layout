@@ -23,4 +23,4 @@ for i, cell in enumerate(nb["cells"]):
     src = src.replace("c.show()", "pass")
     exec(compile(src, f"ActiveCircuit.ipynb:cell{i}", "exec"), ns)
 
-print(f"GDS salvo em {HERE / 'CircuitoLucivaldoV1.gds'}")
+print(f"GDS salvo em {HERE / 'CircuitoLucivaldoV2.gds'}")

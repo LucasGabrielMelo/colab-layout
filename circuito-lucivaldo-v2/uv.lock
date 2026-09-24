@@ -179,7 +179,7 @@ wheels = [
 ]
 
 [[package]]
-name = "circuito-lucivaldo-v1"
+name = "circuito-lucivaldo-v2"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

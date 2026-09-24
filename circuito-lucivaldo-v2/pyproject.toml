@@ -1,7 +1,7 @@
 [project]
-name = "circuito-lucivaldo-v1"
+name = "circuito-lucivaldo-v2"
 version = "0.1.0"
-description = "Layout do circuito fotônico ativo (Lucivaldo v1) com gdsfactory"
+description = "Layout do circuito fotônico ativo (Lucivaldo v2) com gdsfactory"
 requires-python = ">=3.12,<3.14"
 dependencies = [
     "gdsfactory==9.47.0",
