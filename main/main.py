@@ -56,6 +56,15 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "celula": "mzi_o4_passivo",
         "origem_um": (2300.0, -4400.0),
     },
+    {
+        "nome": "lucas-v1",
+        "gds": "circuito-lucas-v1/MZI_50GHZ_2_stages_Lucas.gds",
+        "celula": "TOP",
+        # A TOP do Lucas vai de cerca de (-511, -280) a (455, 284) µm.
+        # Esta origem deixa o canto inferior esquerdo em (-4100, -4400).
+        # Em x=-4400 o bloco encosta no anel de metal e o DRC parte o design_area.
+        "origem_um": (-3589.272, -4120.388),
+    },
 ]
 
 
@@ -122,14 +131,19 @@ def box(comp: pf.Component) -> tuple[float, float, float, float]:
     return float(blo[0]), float(blo[1]), float(bhi[0]), float(bhi[1])
 
 
-def walk_components(comp: pf.Component, seen: set[int] | None = None):
-    seen = set() if seen is None else seen
-    if id(comp) in seen:
-        return
-    seen.add(id(comp))
-    yield comp
-    for ref in comp.references:
-        yield from walk_components(ref.component, seen)
+def walk_components(comp: pf.Component):
+    """Percorre a célula e as dependências que o GDS realmente exporta.
+
+    ``Reference.component`` é um proxy reutilizado: o ``id`` muda a cada
+    acesso e não serve para caminhar a hierarquia. ``dependencies()``
+    devolve as células estáveis.
+    """
+    vistos: set[int] = set()
+    for cell in (comp, *comp.dependencies()):
+        if id(cell) in vistos:
+            continue
+        vistos.add(id(cell))
+        yield cell
 
 
 def cell_names(comp: pf.Component) -> set[str]:
@@ -242,6 +256,29 @@ def cabe_no_die(bloco: pf.Component, origem: tuple[float, float], nome: str) -> 
         )
 
 
+def desambiguar_celulas(bloco: pf.Component, ocupados: set[str], prefixo: str) -> None:
+    """Renomeia células do bloco que já existem na main.
+
+    O GDS não aceita duas células com o mesmo nome. O prefixo usa o nome
+    do circuito, com hífen trocado por sublinhado.
+    """
+    tag = prefixo.replace("-", "_")
+    celulas = list(walk_components(bloco))
+    reservados = set(ocupados) | {cell.name for cell in celulas}
+    for cell in celulas:
+        if cell.name not in ocupados:
+            continue
+        base = f"{tag}__{cell.name}"
+        novo = base
+        n = 2
+        while novo in reservados:
+            novo = f"{base}_{n}"
+            n += 1
+        print(f"célula {cell.name} de {prefixo} renomeada para {novo}")
+        cell.name = novo
+        reservados.add(novo)
+
+
 def conferir_inclusao(
     atual: pf.Component,
     bloco: pf.Component,
@@ -250,6 +287,7 @@ def conferir_inclusao(
 ) -> None:
     assert_no_layer6(bloco)
     cabe_no_die(bloco, origem, nome)
+    desambiguar_celulas(bloco, cell_names(atual), nome)
     clash = cell_names(atual) & cell_names(bloco)
     if clash:
         raise RuntimeError(
