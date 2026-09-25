@@ -65,6 +65,14 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         # Em x=-4400 o bloco encosta no anel de metal e o DRC parte o design_area.
         "origem_um": (-3589.272, -4120.388),
     },
+    {
+        "nome": "mariana-v1",
+        "gds": "circuito-mariana-v1/CircuitoMariana_layout_25_09.gds",
+        "celula": "TOP",
+        # A TOP da Mariana vai de cerca de (-241, -596) a (620, 14) µm.
+        # Mesma borda esquerda do Lucas (x=-4100) e 100 µm acima do bloco dele.
+        "origem_um": (-3859.069, -3140.687),
+    },
 ]
 
 

@@ -50,7 +50,8 @@ Os relatórios ficam em `main/relatorios/`, na ordem de execução. O prefixo `0
 - `00_DRC_circuito-lucivaldo-v2.txt`
 - `01_DRC_isa-jose-v1.txt`
 - `02_DRC_lucas-v1.txt`
-- `03_DRC_main.txt`
+- `03_DRC_mariana-v1.txt`
+- `04_DRC_main.txt`
 
 A primeira rodada fixa a baseline de `design_area`, `si_width` e `si_space`. As seguintes não podem piorar essa baseline nem introduzir erro de metal. Avisos (`pin_layer`, `black_box`, `window`) entram no relatório e não interrompem o script. Camada `6/0`, célula com nome repetido, silício `(1, 0)` sobreposto e bloco fora de ±4500 µm interrompem.
 
@@ -140,7 +141,7 @@ O DRC da main usa o deck NanoSOI Silicon v10 em [`main/drc/NanoSOI_Silicon_v10.d
 
 ## Layout da main
 
-O arquivo enviado à foundry é o [`main/saida/main.oas`](main/saida/main.oas). A figura abaixo é esse layout, com o circuito do Lucivaldo na origem, o `isa-jose-v1` no canto inferior direito e o `lucas-v1` no canto inferior esquerdo.
+O arquivo enviado à foundry é o [`main/saida/main.oas`](main/saida/main.oas). A figura abaixo é esse layout, com o circuito do Lucivaldo na origem, o `isa-jose-v1` no canto inferior direito, o `lucas-v1` no canto inferior esquerdo e o `mariana-v1` logo acima do Lucas, na mesma borda esquerda.
 
 ![Layout main.oas](figs/main.png)
 

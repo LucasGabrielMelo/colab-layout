@@ -1,8 +1,8 @@
 main final
 
-black_box = 1845
+black_box = 3728
 design_area = 797
-pin_layer = 200
+pin_layer = 610
 si_width = 6
 
 falha dura fora da origem: nenhuma
