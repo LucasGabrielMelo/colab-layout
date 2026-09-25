@@ -141,7 +141,9 @@ O DRC da main usa o deck NanoSOI Silicon v10 em [`main/drc/NanoSOI_Silicon_v10.d
 
 ## Layout da main
 
-O arquivo enviado à foundry é o [`main/saida/main.oas`](main/saida/main.oas). A figura abaixo é esse layout, com o circuito do Lucivaldo na origem, o `isa-jose-v1` no canto inferior direito, o `lucas-v1` no canto inferior esquerdo e o `mariana-v1` logo acima do Lucas, na mesma borda esquerda.
+O arquivo enviado à foundry é o [`main/saida/main.oas`](main/saida/main.oas). 
+
+A figura abaixo é o layout atualizado.
 
 ![Layout main.oas](figs/main.png)
 
