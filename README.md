@@ -49,9 +49,10 @@ Os relatórios ficam em `main/relatorios/`, na ordem de execução. O prefixo `0
 
 - `00_DRC_circuito-lucivaldo-v2.txt`
 - `01_DRC_isa-jose-v1.txt`
-- `02_DRC_lucas-v1.txt`
-- `03_DRC_mariana-v1.txt`
-- `04_DRC_main.txt`
+- `02_DRC_isa-jose-v1-pdk.txt`
+- `03_DRC_lucas-v1.txt`
+- `04_DRC_mariana-v1.txt`
+- `05_DRC_main.txt`
 
 A primeira rodada fixa a baseline de `design_area`, `si_width` e `si_space`. As seguintes não podem piorar essa baseline nem introduzir erro de metal. Avisos (`pin_layer`, `black_box`, `window`) entram no relatório e não interrompem o script. Camada `6/0`, célula com nome repetido, silício `(1, 0)` sobreposto e bloco fora de ±4500 µm interrompem.
 
@@ -65,9 +66,15 @@ A primeira rodada fixa a baseline de `design_area`, `si_width` e `si_space`. As 
 CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
     {
         "nome": "isa-jose-v1",
-        "gds": "circuito-isa-jose-v1/saida/passivo.gds",
-        "celula": "mzi_o4_passivo",
-        "origem_um": (2300.0, -4400.0),
+        "gds": "circuito-isa-jose-v1/mzi_O4_2estagios_gc_array.gds",
+        "celula": "MZI_O4_GC7",
+        "origem_um": (1780.731, -3655.679),
+    },
+    {
+        "nome": "isa-jose-v1-pdk",
+        "gds": "circuito-isa-jose-v1/mzi_O4_2estagios_gc_array_pdk.gds",
+        "celula": "MZI_O4_GC7_PDK",
+        "origem_um": (3222.971, -3655.679),
     },
     {
         "nome": "fulano-v1",
@@ -114,7 +121,7 @@ O arquivo sai em `circuito-lucivaldo-v2/CircuitoLucivaldoV2.gds`. Depois rode `m
 
 O ambiente Python é único, na raiz do repositório. Não crie um `venv` dentro da pasta de um circuito.
 
-É preciso ter o [KLayout](https://www.klayout.de/) instalado. O script procura `klayout_app.exe` no `PATH`, em `%USERPROFILE%\KLayout`, em `Program Files` e em `%APPDATA%\KLayout`.
+É preciso ter o [KLayout](https://www.klayout.de/) instalado. O script procura `klayout_app.exe` no `PATH`, em `%USERPROFILE%\KLayout`, em `Program Files`, em `Program Files (x86)` e em `%APPDATA%\KLayout`.
 
 ```powershell
 uv sync

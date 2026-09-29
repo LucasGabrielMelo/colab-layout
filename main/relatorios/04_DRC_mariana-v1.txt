@@ -1,8 +1,8 @@
-main com lucas-v1
+main com mariana-v1
 
-black_box = 1845
+black_box = 6828
 design_area = 797
-pin_layer = 200
+pin_layer = 646
 si_width = 6
 
 falha dura fora da origem: nenhuma

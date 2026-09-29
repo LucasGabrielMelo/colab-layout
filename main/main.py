@@ -22,7 +22,7 @@ from pathlib import Path
 from shutil import which
 from typing import TypedDict
 
-import photonforge as pf
+import gdsfactory as gf
 
 REPO = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
@@ -52,9 +52,20 @@ class CircuitoSecundario(TypedDict):
 CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
     {
         "nome": "isa-jose-v1",
-        "gds": "circuito-isa-jose-v1/saida/passivo.gds",
-        "celula": "mzi_o4_passivo",
-        "origem_um": (2300.0, -4400.0),
+        "gds": "circuito-isa-jose-v1/mzi_O4_2estagios_gc_array.gds",
+        "celula": "MZI_O4_GC7",
+        # A célula vai de cerca de (-127, -744) a (1215, 743) µm.
+        # Os dois blocos ficam lado a lado, com a base em y=-4400,
+        # centrados na faixa x=2300–3800 que o passivo ocupava.
+        "origem_um": (1140.0, -3260.0),
+    },
+    {
+        "nome": "isa-jose-v1-pdk",
+        "gds": "circuito-isa-jose-v1/mzi_O4_2estagios_gc_array_pdk.gds",
+        "celula": "MZI_O4_GC7_PDK",
+        # 100 µm à direita do bloco anterior. A célula vai de cerca de
+        # (-127, -744) a (1224, 743) µm.
+        "origem_um": (2600.0, -3450.0),
     },
     {
         "nome": "lucas-v1",
@@ -102,7 +113,7 @@ def localizar_klayout() -> Path:
     if encontrado:
         return Path(encontrado)
     busca = [Path.home() / "KLayout"]
-    for env in ("ProgramFiles", "APPDATA", "LOCALAPPDATA"):
+    for env in ("ProgramFiles", "ProgramFiles(x86)", "APPDATA", "LOCALAPPDATA"):
         base = os.environ.get(env)
         if base:
             busca.append(Path(base) / "KLayout")
@@ -120,7 +131,7 @@ def localizar_klayout() -> Path:
             return hits[0]
     raise FileNotFoundError(
         "KLayout não encontrado. Instale o KLayout e deixe klayout_app.exe "
-        "no PATH ou em %APPDATA%\\KLayout."
+        "no PATH, em Program Files, em Program Files (x86) ou em %APPDATA%\\KLayout."
     )
 
 
@@ -134,47 +145,57 @@ def gds_lucivaldo() -> Path:
     return caminho
 
 
-def box(comp: pf.Component) -> tuple[float, float, float, float]:
-    blo, bhi = comp.bounds()
-    return float(blo[0]), float(blo[1]), float(bhi[0]), float(bhi[1])
+def box(comp: gf.kf.KCell) -> tuple[float, float, float, float]:
+    caixa = comp.dbbox()
+    return float(caixa.left), float(caixa.bottom), float(caixa.right), float(caixa.top)
 
 
-def walk_components(comp: pf.Component):
-    """Percorre a célula e as dependências que o GDS realmente exporta.
-
-    ``Reference.component`` é um proxy reutilizado: o ``id`` muda a cada
-    acesso e não serve para caminhar a hierarquia. ``dependencies()``
-    devolve as células estáveis.
-    """
+def walk_cells(comp: gf.kf.KCell):
+    """Percorre a célula e as dependências que o GDS exporta."""
+    layout = comp.kcl.layout
     vistos: set[int] = set()
-    for cell in (comp, *comp.dependencies()):
-        if id(cell) in vistos:
+    for indice in (comp.cell_index(), *comp.called_cells()):
+        if indice in vistos:
             continue
-        vistos.add(id(cell))
-        yield cell
+        vistos.add(indice)
+        cell = layout.cell(indice)
+        if cell is not None:
+            yield cell
 
 
-def cell_names(comp: pf.Component) -> set[str]:
-    return {item.name for item in walk_components(comp)}
+def cell_names(comp: gf.kf.KCell) -> set[str]:
+    return {cell.name for cell in walk_cells(comp)}
 
 
-def assert_no_layer6(comp: pf.Component) -> None:
-    used: set[tuple[int, int]] = set()
-    for cell in walk_components(comp):
-        used.update(cell.structures.keys())
-    if CAMADA_JANELA in used:
+def camadas_usadas(comp: gf.kf.KCell) -> set[tuple[int, int]]:
+    layout = comp.kcl.layout
+    usadas: set[tuple[int, int]] = set()
+    for cell in walk_cells(comp):
+        for indice in layout.layer_indexes():
+            if cell.shapes(indice).size():
+                info = layout.get_info(indice)
+                usadas.add((info.layer, info.datatype))
+    return usadas
+
+
+def assert_no_layer6(comp: gf.kf.KCell) -> None:
+    if CAMADA_JANELA in camadas_usadas(comp):
         raise RuntimeError("camada 6/0 presente — exige aprovação ANT")
 
 
-def carregar_celula(gds: Path, celula: str) -> pf.Component:
+def carregar_celula(gds: Path, celula: str) -> gf.kf.KCell:
     if not gds.is_file():
         raise FileNotFoundError(f"GDS ausente: {gds}")
-    cells = pf.load_layout(str(gds))
-    if celula not in cells:
+    kcl = gf.kf.KCLayout(_nome_unico(gds.stem))
+    opcoes = gf.kf.utilities.load_layout_options()
+    opcoes.warn_level = 0
+    kcl.read(str(gds), options=opcoes)
+    if kcl.layout.cell(celula) is None:
+        nomes = sorted(cell.name for cell in kcl.layout.each_cell())
         raise KeyError(
-            f"célula {celula} ausente em {gds.name}. Células: {sorted(cells)}"
+            f"célula {celula} ausente em {gds.name}. Células: {nomes}"
         )
-    return cells[celula]
+    return kcl[celula]
 
 
 def _nome_unico(prefixo: str) -> str:
@@ -183,49 +204,101 @@ def _nome_unico(prefixo: str) -> str:
     return f"{prefixo}_{_nome_seq}"
 
 
-def _only_layer(src: pf.Component, layer: tuple[int, int], name: str) -> pf.Component:
-    flat = src.copy()
-    flat.flatten()
-    out = pf.Component(_nome_unico(name))
-    for geom in flat.structures.get(layer, ()):
-        out.add(layer, geom)
-    return out
+def _regiao(comp: gf.kf.KCell, camada: tuple[int, int]) -> gf.kdb.Region:
+    layout = comp.kcl.layout
+    indice = layout.layer(camada[0], camada[1])
+    return gf.kdb.Region(comp.kdb_cell.begin_shapes_rec(indice))
 
 
 def silicon_overlap(
-    atual: pf.Component,
-    bloco: pf.Component,
+    atual: gf.kf.KCell,
+    bloco: gf.kf.KCell,
     origem: tuple[float, float],
 ) -> int:
-    host_si = _only_layer(atual, CAMADA_SI, "host_si")
-    bloco_si = _only_layer(bloco, CAMADA_SI, "bloco_si")
-    hit = pf.boolean(
-        pf.Reference(host_si),
-        pf.Reference(bloco_si, origin=origem),
-        "*",
+    dbu_bloco = bloco.kcl.layout.dbu
+    dbu = atual.kcl.layout.dbu
+    if dbu_bloco != dbu:
+        raise RuntimeError(
+            f"unidade do GDS diferente da main: {bloco.name} "
+            f"dbu={dbu_bloco}, main dbu={dbu}"
+        )
+    dx = int(round(origem[0] / dbu))
+    dy = int(round(origem[1] / dbu))
+    hit = _regiao(atual, CAMADA_SI) & _regiao(bloco, CAMADA_SI).transformed(
+        gf.kdb.Trans(dx, dy)
     )
-    return len(hit)
+    return hit.count()
+
+
+def _copiar_arvore(destino: gf.kdb.Layout, origem: gf.kf.KCell) -> gf.kdb.Cell:
+    ocupados = {cell.name for cell in destino.each_cell()}
+    conflito = cell_names(origem) & ocupados
+    if conflito:
+        raise RuntimeError(
+            "nomes de célula repetidos ao montar a main: " + str(sorted(conflito))
+        )
+    novo = destino.create_cell(origem.name)
+    novo.copy_tree(origem.kdb_cell)
+    return novo
+
+
+def _instanciar(
+    pai: gf.kdb.Cell,
+    filho: gf.kdb.Cell,
+    origem: tuple[float, float],
+    dbu: float,
+) -> None:
+    dx = int(round(origem[0] / dbu))
+    dy = int(round(origem[1] / dbu))
+    pai.insert(gf.kdb.CellInstArray(filho.cell_index(), gf.kdb.Trans(dx, dy)))
 
 
 def montar(
-    host: pf.Component,
-    inclusoes: list[tuple[pf.Component, tuple[float, float]]],
-) -> pf.Component:
-    main = pf.Component(_nome_unico(CELULA_MAIN))
-    main.name = CELULA_MAIN
-    main.add_reference(host)
+    host: gf.kf.KCell,
+    inclusoes: list[tuple[gf.kf.KCell, tuple[float, float]]],
+) -> gf.kf.KCell:
+    kcl = gf.kf.KCLayout(_nome_unico(CELULA_MAIN))
+    dbu = host.kcl.layout.dbu
+    kcl.layout.dbu = dbu
+    top = kcl.kcell(CELULA_MAIN)
+    _instanciar(top.kdb_cell, _copiar_arvore(kcl.layout, host), (0.0, 0.0), dbu)
     for bloco, origem in inclusoes:
-        main.add_reference(bloco).translate(origem)
-    return main
+        dbu_bloco = bloco.kcl.layout.dbu
+        if dbu_bloco != dbu:
+            raise RuntimeError(
+                f"unidade do GDS diferente da main: {bloco.name} "
+                f"dbu={dbu_bloco}, main dbu={dbu}"
+            )
+        copiado = _copiar_arvore(kcl.layout, bloco)
+        _instanciar(top.kdb_cell, copiado, origem, dbu)
+    return top
 
 
-def gravar_gds(main: pf.Component) -> None:
-    pf.write_layout(str(MAIN_GDS), main, library_name="MAIN")
+def _opcoes_gravacao() -> gf.kdb.SaveLayoutOptions:
+    return gf.kf.save_layout_options(
+        libname="MAIN",
+        gds2_libname="MAIN",
+        gds2_max_cellname_length=320,
+        write_context_info=False,
+    )
+
+
+def _gravar(comp: gf.kf.KCell, caminho: Path) -> None:
+    comp.kcl.write(
+        caminho,
+        options=_opcoes_gravacao(),
+        set_meta_data=False,
+        deduplicate_cell_names=False,
+    )
+
+
+def gravar_gds(main: gf.kf.KCell) -> None:
+    _gravar(main, MAIN_GDS)
     print(f"main {MAIN_GDS} ({MAIN_GDS.stat().st_size / 1024:.1f} kB)")
 
 
-def gravar_oas(main: pf.Component) -> None:
-    pf.write_layout(str(MAIN_OAS), main, library_name="MAIN")
+def gravar_oas(main: gf.kf.KCell) -> None:
+    _gravar(main, MAIN_OAS)
     print(f"OAS salvo em {MAIN_OAS} ({MAIN_OAS.stat().st_size / 1024:.1f} kB)")
 
 
@@ -248,7 +321,7 @@ def ler_secundario(
     return nome, gds, celula, (float(origem[0]), float(origem[1]))
 
 
-def cabe_no_die(bloco: pf.Component, origem: tuple[float, float], nome: str) -> None:
+def cabe_no_die(bloco: gf.kf.KCell, origem: tuple[float, float], nome: str) -> None:
     x0, y0, x1, y1 = box(bloco)
     ox, oy = origem
     xa, ya, xb, yb = x0 + ox, y0 + oy, x1 + ox, y1 + oy
@@ -264,14 +337,14 @@ def cabe_no_die(bloco: pf.Component, origem: tuple[float, float], nome: str) -> 
         )
 
 
-def desambiguar_celulas(bloco: pf.Component, ocupados: set[str], prefixo: str) -> None:
+def desambiguar_celulas(bloco: gf.kf.KCell, ocupados: set[str], prefixo: str) -> None:
     """Renomeia células do bloco que já existem na main.
 
     O GDS não aceita duas células com o mesmo nome. O prefixo usa o nome
     do circuito, com hífen trocado por sublinhado.
     """
     tag = prefixo.replace("-", "_")
-    celulas = list(walk_components(bloco))
+    celulas = list(walk_cells(bloco))
     reservados = set(ocupados) | {cell.name for cell in celulas}
     for cell in celulas:
         if cell.name not in ocupados:
@@ -288,8 +361,8 @@ def desambiguar_celulas(bloco: pf.Component, ocupados: set[str], prefixo: str) -
 
 
 def conferir_inclusao(
-    atual: pf.Component,
-    bloco: pf.Component,
+    atual: gf.kf.KCell,
+    bloco: gf.kf.KCell,
     origem: tuple[float, float],
     nome: str,
 ) -> None:
@@ -439,8 +512,8 @@ def main() -> None:
     host = carregar_celula(gds_lucivaldo(), CELULA_LUCIVALDO)
     assert_no_layer6(host)
 
-    inclusoes: list[tuple[pf.Component, tuple[float, float]]] = []
-    secundarios: list[tuple[str, pf.Component, tuple[float, float]]] = []
+    inclusoes: list[tuple[gf.kf.KCell, tuple[float, float]]] = []
+    secundarios: list[tuple[str, gf.kf.KCell, tuple[float, float]]] = []
     for item in CIRCUITOS_SECUNDARIOS:
         nome, gds, celula, origem = ler_secundario(item)
         bloco = carregar_celula(gds, celula)

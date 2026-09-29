@@ -1,8 +1,8 @@
-main com isa-jose-v1
+main com lucas-v1
 
-black_box = 2583
+black_box = 5184
 design_area = 797
-pin_layer = 32
+pin_layer = 236
 si_width = 6
 
 falha dura fora da origem: nenhuma
