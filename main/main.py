@@ -65,7 +65,7 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "celula": "MZI_O4_GC7_PDK",
         # 100 µm à direita do bloco anterior. A célula vai de cerca de
         # (-127, -744) a (1224, 743) µm.
-        "origem_um": (2600.0, -3450.0),
+        "origem_um": (2800.0, -3450.0),
     },
     {
         "nome": "lucas-v1",

@@ -1,6 +1,6 @@
 main com mariana-v1
 
-black_box = 6828
+black_box = 1662
 design_area = 797
 pin_layer = 646
 si_width = 6

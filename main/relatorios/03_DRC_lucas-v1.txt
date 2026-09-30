@@ -1,6 +1,5 @@
 main com lucas-v1
 
-black_box = 5184
 design_area = 797
 pin_layer = 236
 si_width = 6

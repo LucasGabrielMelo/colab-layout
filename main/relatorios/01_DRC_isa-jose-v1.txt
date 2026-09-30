@@ -1,6 +1,5 @@
 main com isa-jose-v1
 
-black_box = 2583
 design_area = 797
 pin_layer = 32
 si_width = 6

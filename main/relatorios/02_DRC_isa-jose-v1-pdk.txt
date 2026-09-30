@@ -1,6 +1,5 @@
 main com isa-jose-v1-pdk
 
-black_box = 5184
 design_area = 797
 pin_layer = 64
 si_width = 6
