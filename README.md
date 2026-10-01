@@ -30,7 +30,7 @@ O script [`main/main.py`](main/main.py) sempre refaz a main do zero:
 1. Gera `main/saida/main.gds` a partir da célula `TOP` do circuito do Lucivaldo.
 2. Passa esse `main.gds` pelo DRC e grava o relatório `00`.
 3. Percorre `CIRCUITOS_SECUNDARIOS`. A cada circuito, inclui o GDS nas coordenadas indicadas, regrava `main.gds` e roda o DRC de novo.
-4. No final, o `main.gds` completo passa por um último DRC e o script grava `main/saida/main.oas`.
+4. No final, o `main.gds` completo passa por um último DRC e o script grava `main/saida/main.oas` e a figura `figs/main.png`.
 
 ```mermaid
 flowchart TD
@@ -42,7 +42,7 @@ flowchart TD
   inclui --> drcN["DRC NN do circuito incluido"]
   drcN --> loop
   loop -->|nao| drcF["DRC final NN_DRC_main"]
-  drcF --> oas["Gravar main.oas"]
+  drcF --> oas["Gravar main.oas e figs/main.png"]
 ```
 
 Os relatórios ficam em `main/relatorios/`, na ordem de execução. O prefixo `00`, `01`, `02`… organiza essa ordem. Cada rodada gera um `.txt` e um `.lyrdb` com o mesmo nome, por exemplo:
@@ -96,7 +96,7 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
 uv run python main/main.py
 ```
 
-O script inclui todos os circuitos da lista, repete o DRC depois de cada um, atualiza `main.gds` e, no final, atualiza `main.oas`.
+O script inclui todos os circuitos da lista, repete o DRC depois de cada um, atualiza `main.gds` e, no final, atualiza `main.oas` e `figs/main.png`.
 
 ## Atualizar a pasta do Lucivaldo
 

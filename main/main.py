@@ -23,6 +23,7 @@ from shutil import which
 from typing import TypedDict
 
 import gdsfactory as gf
+import klayout.lay as lay
 
 REPO = Path(__file__).resolve().parent.parent
 HERE = Path(__file__).resolve().parent
@@ -68,6 +69,13 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "origem_um": (2800.0, -3450.0),
     },
     {
+        "nome": "isa-jose-v1-rota",
+        "gds": "circuito-isa-jose-v1/rota_eletrica.gds",
+        "celula": "rota_eletrica",
+        # Coordenadas absolutas da main. O GDS sai de roteamento_eletrico.py.
+        "origem_um": (0.0, 0.0),
+    },
+    {
         "nome": "lucas-v1",
         "gds": "circuito-lucas-v1/MZI_50GHZ_2_stages_Lucas.gds",
         "celula": "TOP",
@@ -100,8 +108,30 @@ METAL_CLEAR = (
 )
 AVISOS = frozenset({"pin_layer", "black_box", "window"})
 
+FIGS = REPO / "figs"
 MAIN_GDS = SAIDA / "main.gds"
 MAIN_OAS = SAIDA / "main.oas"
+MAIN_PNG = FIGS / "main.png"
+PNG_PX = 4000
+
+# Pinos, DEVREC, black box e o retângulo do die não entram na figura.
+CAMADAS_FIGURA_OCULTAS = frozenset({(1, 10), (68, 0), (81, 0), (290, 0), (998, 0)})
+# Tons da legenda do PDK NanoSOI. O swatch do silício é muito claro para
+# a figura inteira, então o matiz fica e a cor desce. Formato 0xAARRGGBB.
+COR_FIGURA = {
+    (1, 0): 0xff0033,  # Silicon Full Etch
+    (10, 0): 0xff0033,
+    (31, 0): 0xff0033,
+    (33, 0): 0xff0033,
+    (11, 0): 0x0033ff,  # TiW Heater
+    (12, 0): 0xcc9900,  # TiW/Au Routing Bilayer
+    (13, 0): 0x663300,  # Bond Pad Open
+    (200, 0): 0xFFFF0000,  # SEM Imaging
+    (201, 0): 0x006633,  # Deep Trench
+    (202, 0): 0x006633,  # Deep Trench Handling Exclusion
+    (203, 0): 0x006633,  # Thermal Isolation Trenches
+    (1, 99): 0xFFF43471,
+}
 
 _nome_seq = 0
 
@@ -298,6 +328,48 @@ def gravar_gds(main: gf.kf.KCell) -> None:
 def gravar_oas(main: gf.kf.KCell) -> None:
     _gravar(main, MAIN_OAS)
     print(f"OAS salvo em {MAIN_OAS} ({MAIN_OAS.stat().st_size / 1024:.1f} kB)")
+
+
+def _cor_opaca(cor: int) -> int:
+    """0xRRGGBB ou 0xAARRGGBB viram preenchimento opaco."""
+    return 0xFF000000 | (cor & 0xFFFFFF)
+
+
+def _estilo_figura(vista: lay.LayoutView) -> None:
+    it = vista.begin_layers()
+    while not it.at_end():
+        no = it.current().dup()
+        camada = (no.source_layer, no.source_datatype)
+        if camada in CAMADAS_FIGURA_OCULTAS:
+            no.visible = False
+        else:
+            cor = COR_FIGURA.get(camada)
+            if cor is not None:
+                opaca = _cor_opaca(cor)
+                no.fill_color = opaca
+                no.frame_color = opaca
+                no.dither_pattern = 0
+                no.transparent = False
+            no.visible = True
+        vista.replace_layer_node(it, no)
+        it.next()
+
+
+def gravar_png() -> None:
+    FIGS.mkdir(parents=True, exist_ok=True)
+    vista = lay.LayoutView()
+    vista.load_layout(str(MAIN_OAS), False)
+    vista.max_hier()
+    vista.set_config("background-color", "#ffffff")
+    vista.set_config("grid-visible", "false")
+    vista.set_config("inst-visible", "false")
+    vista.set_config("text-visible", "false")
+    # true desenha só o contorno. O preenchimento sólido fica no dither 0.
+    vista.set_config("no-stipple", "false")
+    _estilo_figura(vista)
+    vista.zoom_fit()
+    vista.save_image(str(MAIN_PNG), PNG_PX, PNG_PX)
+    print(f"PNG salvo em {MAIN_PNG} ({MAIN_PNG.stat().st_size / 1024:.1f} kB)")
 
 
 def sanitizar(rotulo: str) -> str:
@@ -545,6 +617,7 @@ def main() -> None:
     gravar_gds(main_comp)
     rodar_drc(klayout, "main final", "main", indice, baseline)
     gravar_oas(main_comp)
+    gravar_png()
 
 
 if __name__ == "__main__":
