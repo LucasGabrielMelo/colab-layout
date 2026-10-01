@@ -146,6 +146,10 @@ O DRC da main usa o deck NanoSOI Silicon v10 em [`main/drc/NanoSOI_Silicon_v10.d
 
 - **Sugestão adicional:** as grades devem estar **desalinhadas em x** (não ficar na mesma coordenada horizontal).
 
+- Para medições com **Fiber Array**, utilizar o modelo `gc_fiber_array.gds`:
+
+  ![Modelo de gc para fiber array](figs/gc_array01.png)
+
 ## Layout da main
 
 O arquivo enviado à foundry é o [`main/saida/main.oas`](main/saida/main.oas). 
