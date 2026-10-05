@@ -76,19 +76,23 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "origem_um": (0.0, 0.0),
     },
     {
-        "nome": "lucas-v1",
-        "gds": "circuito-lucas-v1/MZI_50GHZ_2_stages_Lucas.gds",
+        "nome": "lucas_d10-v2",
+        "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d10_Lucas.gds",
         "celula": "TOP",
-        # Em x=-4400 o bloco encosta no anel de metal e o DRC parte o design_area.
-        "origem_um": (-4100, -4400),
+        "origem_um": (-4000, -4400),
     },
     {
-        "nome": "mariana-v1",
-        "gds": "circuito-mariana-v1/CircuitoMariana_layout_25_09.gds",
+        "nome": "lucas_d5-v2",
+        "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d5_Lucas.gds",
         "celula": "TOP",
-        # A TOP da Mariana vai de cerca de (-241, -596) a (620, 14) µm.
-        # Mesma borda esquerda do Lucas (x=-4100) e 100 µm acima do bloco dele.
-        "origem_um": (-3859.069, -3140.687),
+        "origem_um": (-4000, -1930),
+    },
+    {
+        "nome": "mariana_d5-v2",
+        "gds": "circuito-mariana-v2/CircuitoMariana.gds",
+        "celula": "TOP",
+        # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
+        "origem_um": (-2400, -3400),
     },
 ]
 

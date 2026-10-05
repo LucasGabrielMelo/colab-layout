@@ -1,7 +1,7 @@
-main com isa-jose-v1
+main com lucas_d10-v2
 
 design_area = 797
-pin_layer = 32
+pin_layer = 240
 si_width = 6
 
 falha dura fora da origem: nenhuma
