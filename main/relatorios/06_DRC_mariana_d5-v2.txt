@@ -1,7 +1,8 @@
-main com isa-jose-v1
+main com mariana_d5-v2
 
+black_box = 11634
 design_area = 797
-pin_layer = 32
+pin_layer = 826
 si_width = 6
 
 falha dura fora da origem: nenhuma

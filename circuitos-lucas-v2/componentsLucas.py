@@ -73,29 +73,38 @@ def dcEbeam_25() -> gf.Component:
     return comp
 
 @gf.cell
-def nanotoolsSpiralPaperclip(length) -> gf.Component:
-    length_array = [193.597, 890.327, 1608.635, 3028.174]
-    if not length in length_array:
-        raise ValueError(f'Error! length must be in the array: {length_array}')
+def nanotools_spirals(n, d) -> gf.Component:
+    if not n in [1,2,3]:
+        raise ValueError("n deve ser um número de 1 a 3")
+    if not d in [5,10]:
+        raise ValueError("d deve ser 5 ou 10")
+
+    centers_1_d5 = [(-46.500, 22.000),(-42.000, -32.000)]
+    centers_2_d5 = [(-57.500,33.000),(-53.000, -43.000)]
+    centers_3_d5 = [(-74.000, 49.500), (-69.500, -59.500)]
+    centers_1_d10 = [(-66.000, 31.500),(-61.500, -46.500)]
+    centers_2_d10 = [(-72.000, 52.500),(-72.500, -62.500)]
+    centers_3_d10 = [(-108.000, 73.500), (-103.500, -88.500)]
+
+    centers_d5 = [centers_1_d5, centers_2_d5, centers_3_d5]
+    centers_d10 = [centers_1_d10, centers_2_d10, centers_3_d10]
+
+    filename = folder + '/Spirals/spiral_%d_d%d.gds' %(n,d)
+    try:
+        cellname = 'Square'
+        comp = gf.import_gds(filename, cellname=cellname)
+    except:
+        cellname = 'Square$1'
+        comp = gf.import_gds(filename, cellname=cellname)
+    if d == 5:
+        comp.add_port(name='o1', center=centers_d5[n-1][0], width=0.5, orientation=90, layer=(1,0), port_type='optical')
+        comp.add_port(name='o2', center=centers_d5[n-1][1], width=0.5, orientation=180, layer=(1,0), port_type='optical')
     else:
-        n = length_array.index(length)
-
-    centers_193 = [(-26.500, 5.000), (-21.000, -13.000)]
-    centers_890 = [(-49.000, 12.500), (-38.500, -25.500)]
-    centers_1608 = [(-54.200, 20.800), (-44.800, -32.800)]
-    centers_3028 = [(-61.800, 31.200), (-53.200, -42.200)]
-
-    centers_matrix = [centers_193, centers_890, centers_1608, centers_3028]
-
-    filename = folder + '/nanotools_paperclip_%.3f.gds' %length
-    cellname = 'Square'
-
-    comp = gf.import_gds(filename, cellname=cellname)
-
-    comp.add_port(name='o1', center=centers_matrix[n][0], width=0.5, orientation=90, layer=(1,0), port_type='optical')
-    comp.add_port(name='o2', center=centers_matrix[n][1], width=0.5, orientation=180, layer=(1,0), port_type='optical')
+        comp.add_port(name='o1', center=centers_d10[n-1][0], width=0.5, orientation=90, layer=(1,0), port_type='optical')
+        comp.add_port(name='o2', center=centers_d10[n-1][1], width=0.5, orientation=180, layer=(1,0), port_type='optical')
 
     return comp
+
 
 @gf.cell
 def nanotools_gcTE() -> gf.Component:

@@ -2,7 +2,7 @@
 <report-database>
  <description>NanoSOI DRC Report</description>
  <original-file/>
- <generator>drc: script='C:\\repositories\\colab_layout\\colab-layout\\main\\drc\\NanoSOI_Silicon_v10.drc'</generator>
+ <generator>drc: script='C:\\Users\\LucasGabriel\\OneDrive\\Documentos\\GitHub\\colab-layout\\main\\drc\\NanoSOI_Silicon_v10.drc'</generator>
  <top-cell>main</top-cell>
  <tags>
  </tags>
@@ -3921,7 +3921,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,2947.5;-4650,2988.995;-4550,2988.995;-4550,2947.5)</value>
+    <value>polygon: (-4650,2952.5;-4650,2988.995;-4550,2988.995;-4550,2952.5)</value>
    </values>
   </item>
   <item>
@@ -3933,7 +3933,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,2952.5;-4650,2988.995;-4550,2988.995;-4550,2952.5)</value>
+    <value>polygon: (-4650,2947.5;-4650,2988.995;-4550,2988.995;-4550,2947.5)</value>
    </values>
   </item>
   <item>
@@ -7125,18 +7125,6 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,-2611.005;-4802.5,-2511.005;-4750,-2511.005;-4750,-2611.005)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>design_area</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
     <value>polygon: (-4797.5,-2611.005;-4797.5,-2511.005;-4750,-2511.005;-4750,-2611.005)</value>
    </values>
   </item>
@@ -7149,7 +7137,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,-2511.005;-4797.5,-2452.5;-4750,-2452.5;-4750,-2511.005)</value>
+    <value>polygon: (-4802.5,-2611.005;-4802.5,-2511.005;-4750,-2511.005;-4750,-2611.005)</value>
    </values>
   </item>
   <item>
@@ -7162,6 +7150,18 @@
    <image/>
    <values>
     <value>polygon: (-4802.5,-2511.005;-4802.5,-2447.5;-4750,-2447.5;-4750,-2511.005)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>design_area</category>
+   <cell>main</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>polygon: (-4797.5,-2511.005;-4797.5,-2452.5;-4750,-2452.5;-4750,-2511.005)</value>
    </values>
   </item>
   <item>
@@ -7329,30 +7329,6 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,-3811.005;-4802.5,-3711.005;-4750,-3711.005;-4750,-3811.005)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>design_area</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
-    <value>polygon: (-4797.5,-3811.005;-4797.5,-3711.005;-4750,-3711.005;-4750,-3811.005)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>design_area</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
     <value>polygon: (-4802.5,-3852.5;-4802.5,-3811.005;-4750,-3811.005;-4750,-3852.5)</value>
    </values>
   </item>
@@ -7366,6 +7342,30 @@
    <image/>
    <values>
     <value>polygon: (-4797.5,-3847.5;-4797.5,-3811.005;-4750,-3811.005;-4750,-3847.5)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>design_area</category>
+   <cell>main</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>polygon: (-4802.5,-3811.005;-4802.5,-3711.005;-4750,-3711.005;-4750,-3811.005)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>design_area</category>
+   <cell>main</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>polygon: (-4797.5,-3811.005;-4797.5,-3711.005;-4750,-3711.005;-4750,-3811.005)</value>
    </values>
   </item>
   <item>
