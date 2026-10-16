@@ -216,18 +216,38 @@ def assert_no_layer6(comp: gf.kf.KCell) -> None:
         raise RuntimeError("camada 6/0 presente — exige aprovação ANT")
 
 
+def _descartar_meta_kfactory(layout: gf.kdb.Layout) -> None:
+    """Tira do GDS os nomes de enclosure que o kfactory não consegue reler.
+
+    O mesmo perfil pode ser gravado duas vezes, por exemplo ``028523d7`` e
+    ``78687732``. A geometria permanece; só a tabela de metadados sai.
+    """
+
+    def limpar(dono: gf.kdb.Layout | gf.kdb.Cell) -> None:
+        for meta in list(dono.each_meta_info()):
+            if meta.name.startswith("kfactory:"):
+                dono.remove_meta_info(meta.name)
+
+    limpar(layout)
+    for cell in layout.each_cell():
+        limpar(cell)
+
+
 def carregar_celula(gds: Path, celula: str) -> gf.kf.KCell:
     if not gds.is_file():
         raise FileNotFoundError(f"GDS ausente: {gds}")
-    kcl = gf.kf.KCLayout(_nome_unico(gds.stem))
+    layout = gf.kdb.Layout()
     opcoes = gf.kf.utilities.load_layout_options()
     opcoes.warn_level = 0
-    kcl.read(str(gds), options=opcoes)
-    if kcl.layout.cell(celula) is None:
-        nomes = sorted(cell.name for cell in kcl.layout.each_cell())
+    layout.read(str(gds), opcoes)
+    _descartar_meta_kfactory(layout)
+    if layout.cell(celula) is None:
+        nomes = sorted(cell.name for cell in layout.each_cell())
         raise KeyError(
             f"célula {celula} ausente em {gds.name}. Células: {nomes}"
         )
+    kcl = gf.kf.KCLayout(_nome_unico(gds.stem))
+    kcl.assign(layout)
     return kcl[celula]
 
 
