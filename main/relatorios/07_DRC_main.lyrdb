@@ -2,7 +2,7 @@
 <report-database>
  <description>NanoSOI DRC Report</description>
  <original-file/>
- <generator>drc: script='C:\\Users\\JOSE~1.ROB\\AppData\\Local\\Temp\\drc-rpou0uzk\\NanoSOI_Silicon_v10.drc'</generator>
+ <generator>drc: script='C:\\Users\\JOSE~1.ROB\\AppData\\Local\\Temp\\drc-hxv86oxc\\NanoSOI_Silicon_v10.drc'</generator>
  <top-cell>main</top-cell>
  <tags>
  </tags>
@@ -149697,18 +149697,6 @@
    <comment/>
    <image/>
    <values>
-    <value>edge-pair: (2260.595,-596.5;2260.571,-593.561)|(2260.629,-593.561;2260.605,-596.5)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>si_width</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
     <value>edge-pair: (2260.571,693.561;2260.595,696.5)|(2260.605,696.5;2260.629,693.561)</value>
    </values>
   </item>
@@ -150117,7 +150105,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,2947.5;4650,2988.995;4750,2988.995;4750,2947.5)</value>
+    <value>polygon: (4650,2952.5;4650,2988.995;4750,2988.995;4750,2952.5)</value>
    </values>
   </item>
   <item>
@@ -150129,7 +150117,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,2952.5;4650,2988.995;4750,2988.995;4750,2952.5)</value>
+    <value>polygon: (4650,2947.5;4650,2988.995;4750,2988.995;4750,2947.5)</value>
    </values>
   </item>
   <item>
@@ -151653,7 +151641,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,688.995;4650,752.5;4750,752.5;4750,688.995)</value>
+    <value>polygon: (4650,688.995;4650,747.5;4750,747.5;4750,688.995)</value>
    </values>
   </item>
   <item>
@@ -151665,7 +151653,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,688.995;4650,747.5;4750,747.5;4750,688.995)</value>
+    <value>polygon: (4650,688.995;4650,752.5;4750,752.5;4750,688.995)</value>
    </values>
   </item>
   <item>
@@ -151725,7 +151713,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,1088.995;4650,1152.5;4750,1152.5;4750,1088.995)</value>
+    <value>polygon: (4650,1088.995;4650,1147.5;4750,1147.5;4750,1088.995)</value>
    </values>
   </item>
   <item>
@@ -151737,7 +151725,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,1088.995;4650,1147.5;4750,1147.5;4750,1088.995)</value>
+    <value>polygon: (4650,1088.995;4650,1152.5;4750,1152.5;4750,1088.995)</value>
    </values>
   </item>
   <item>
@@ -152025,7 +152013,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,2988.995;-4797.5,3088.995;-4750,3088.995;-4750,2988.995)</value>
+    <value>polygon: (-4802.5,2988.995;-4802.5,3088.995;-4750,3088.995;-4750,2988.995)</value>
    </values>
   </item>
   <item>
@@ -152037,7 +152025,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,2988.995;-4802.5,3088.995;-4750,3088.995;-4750,2988.995)</value>
+    <value>polygon: (-4797.5,2988.995;-4797.5,3088.995;-4750,3088.995;-4750,2988.995)</value>
    </values>
   </item>
   <item>
@@ -152073,7 +152061,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,3352.5;-4797.5,3388.995;-4750,3388.995;-4750,3352.5)</value>
+    <value>polygon: (-4802.5,3347.5;-4802.5,3388.995;-4750,3388.995;-4750,3347.5)</value>
    </values>
   </item>
   <item>
@@ -152085,7 +152073,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,3347.5;-4802.5,3388.995;-4750,3388.995;-4750,3347.5)</value>
+    <value>polygon: (-4797.5,3352.5;-4797.5,3388.995;-4750,3388.995;-4750,3352.5)</value>
    </values>
   </item>
   <item>
@@ -152193,18 +152181,6 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,3888.995;-4802.5,3952.5;-4750,3952.5;-4750,3888.995)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>design_area</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
     <value>polygon: (-4797.5,3888.995;-4797.5,3947.5;-4750,3947.5;-4750,3888.995)</value>
    </values>
   </item>
@@ -152217,7 +152193,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,4147.5;-4802.5,4188.995;-4750,4188.995;-4750,4147.5)</value>
+    <value>polygon: (-4802.5,3888.995;-4802.5,3952.5;-4750,3952.5;-4750,3888.995)</value>
    </values>
   </item>
   <item>
@@ -152230,6 +152206,18 @@
    <image/>
    <values>
     <value>polygon: (-4797.5,4152.5;-4797.5,4188.995;-4750,4188.995;-4750,4152.5)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>design_area</category>
+   <cell>main</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>polygon: (-4802.5,4147.5;-4802.5,4188.995;-4750,4188.995;-4750,4147.5)</value>
    </values>
   </item>
   <item>
@@ -152529,7 +152517,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,3888.995;-4750,3952.5;-4650,3952.5;-4650,3888.995)</value>
+    <value>polygon: (-4750,3888.995;-4750,3947.5;-4650,3947.5;-4650,3888.995)</value>
    </values>
   </item>
   <item>
@@ -152541,7 +152529,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,3888.995;-4750,3947.5;-4650,3947.5;-4650,3888.995)</value>
+    <value>polygon: (-4750,3888.995;-4750,3952.5;-4650,3952.5;-4650,3888.995)</value>
    </values>
   </item>
   <item>
@@ -152793,7 +152781,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,3488.995;-4650,3552.5;-4550,3552.5;-4550,3488.995)</value>
+    <value>polygon: (-4650,3488.995;-4650,3547.5;-4550,3547.5;-4550,3488.995)</value>
    </values>
   </item>
   <item>
@@ -152805,7 +152793,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,3488.995;-4650,3547.5;-4550,3547.5;-4550,3488.995)</value>
+    <value>polygon: (-4650,3488.995;-4650,3552.5;-4550,3552.5;-4550,3488.995)</value>
    </values>
   </item>
   <item>
@@ -153273,7 +153261,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,1388.995;-4797.5,1488.995;-4750,1488.995;-4750,1388.995)</value>
+    <value>polygon: (-4802.5,1388.995;-4802.5,1488.995;-4750,1488.995;-4750,1388.995)</value>
    </values>
   </item>
   <item>
@@ -153285,7 +153273,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,1388.995;-4802.5,1488.995;-4750,1488.995;-4750,1388.995)</value>
+    <value>polygon: (-4797.5,1388.995;-4797.5,1488.995;-4750,1488.995;-4750,1388.995)</value>
    </values>
   </item>
   <item>
@@ -153345,7 +153333,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,1788.995;-4797.5,1888.995;-4750,1888.995;-4750,1788.995)</value>
+    <value>polygon: (-4802.5,1788.995;-4802.5,1888.995;-4750,1888.995;-4750,1788.995)</value>
    </values>
   </item>
   <item>
@@ -153357,7 +153345,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,1788.995;-4802.5,1888.995;-4750,1888.995;-4750,1788.995)</value>
+    <value>polygon: (-4797.5,1788.995;-4797.5,1888.995;-4750,1888.995;-4750,1788.995)</value>
    </values>
   </item>
   <item>
@@ -153513,7 +153501,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,1088.995;-4650,1147.5;-4550,1147.5;-4550,1088.995)</value>
+    <value>polygon: (-4650,1088.995;-4650,1152.5;-4550,1152.5;-4550,1088.995)</value>
    </values>
   </item>
   <item>
@@ -153525,7 +153513,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,1088.995;-4650,1152.5;-4550,1152.5;-4550,1088.995)</value>
+    <value>polygon: (-4650,1088.995;-4650,1147.5;-4550,1147.5;-4550,1088.995)</value>
    </values>
   </item>
   <item>
@@ -153777,7 +153765,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,2147.5;-4802.5,2188.995;-4750,2188.995;-4750,2147.5)</value>
+    <value>polygon: (-4797.5,2152.5;-4797.5,2188.995;-4750,2188.995;-4750,2152.5)</value>
    </values>
   </item>
   <item>
@@ -153789,7 +153777,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,2152.5;-4797.5,2188.995;-4750,2188.995;-4750,2152.5)</value>
+    <value>polygon: (-4802.5,2147.5;-4802.5,2188.995;-4750,2188.995;-4750,2147.5)</value>
    </values>
   </item>
   <item>
@@ -153945,7 +153933,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,1088.995;-4750,1152.5;-4650,1152.5;-4650,1088.995)</value>
+    <value>polygon: (-4750,1088.995;-4750,1147.5;-4650,1147.5;-4650,1088.995)</value>
    </values>
   </item>
   <item>
@@ -153957,7 +153945,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,1088.995;-4750,1147.5;-4650,1147.5;-4650,1088.995)</value>
+    <value>polygon: (-4750,1088.995;-4750,1152.5;-4650,1152.5;-4650,1088.995)</value>
    </values>
   </item>
   <item>
@@ -154113,7 +154101,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-647.5;-4750,-611.005;-4650,-611.005;-4650,-647.5)</value>
+    <value>polygon: (-4750,-652.5;-4750,-611.005;-4650,-611.005;-4650,-652.5)</value>
    </values>
   </item>
   <item>
@@ -154125,7 +154113,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-652.5;-4750,-611.005;-4650,-611.005;-4650,-652.5)</value>
+    <value>polygon: (-4750,-647.5;-4750,-611.005;-4650,-611.005;-4650,-647.5)</value>
    </values>
   </item>
   <item>
@@ -154377,7 +154365,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,-111.005;-4802.5,-47.5;-4750,-47.5;-4750,-111.005)</value>
+    <value>polygon: (-4797.5,-111.005;-4797.5,-52.5;-4750,-52.5;-4750,-111.005)</value>
    </values>
   </item>
   <item>
@@ -154389,7 +154377,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,-111.005;-4797.5,-52.5;-4750,-52.5;-4750,-111.005)</value>
+    <value>polygon: (-4802.5,-111.005;-4802.5,-47.5;-4750,-47.5;-4750,-111.005)</value>
    </values>
   </item>
   <item>
@@ -154449,7 +154437,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,288.995;-4802.5,352.5;-4750,352.5;-4750,288.995)</value>
+    <value>polygon: (-4797.5,288.995;-4797.5,347.5;-4750,347.5;-4750,288.995)</value>
    </values>
   </item>
   <item>
@@ -154461,7 +154449,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,288.995;-4797.5,347.5;-4750,347.5;-4750,288.995)</value>
+    <value>polygon: (-4802.5,288.995;-4802.5,352.5;-4750,352.5;-4750,288.995)</value>
    </values>
   </item>
   <item>
@@ -154665,18 +154653,6 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,288.995;-4650,347.5;-4550,347.5;-4550,288.995)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>design_area</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
     <value>polygon: (-4650,288.995;-4650,352.5;-4550,352.5;-4550,288.995)</value>
    </values>
   </item>
@@ -154689,7 +154665,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,-652.5;-4802.5,-611.005;-4750,-611.005;-4750,-652.5)</value>
+    <value>polygon: (-4650,288.995;-4650,347.5;-4550,347.5;-4550,288.995)</value>
    </values>
   </item>
   <item>
@@ -154713,7 +154689,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,-611.005;-4797.5,-511.005;-4750,-511.005;-4750,-611.005)</value>
+    <value>polygon: (-4802.5,-652.5;-4802.5,-611.005;-4750,-611.005;-4750,-652.5)</value>
    </values>
   </item>
   <item>
@@ -154726,6 +154702,18 @@
    <image/>
    <values>
     <value>polygon: (-4802.5,-611.005;-4802.5,-511.005;-4750,-511.005;-4750,-611.005)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>design_area</category>
+   <cell>main</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>polygon: (-4797.5,-611.005;-4797.5,-511.005;-4750,-511.005;-4750,-611.005)</value>
    </values>
   </item>
   <item>
@@ -155049,7 +155037,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-1047.5;-4750,-1011.005;-4650,-1011.005;-4650,-1047.5)</value>
+    <value>polygon: (-4750,-1052.5;-4750,-1011.005;-4650,-1011.005;-4650,-1052.5)</value>
    </values>
   </item>
   <item>
@@ -155061,7 +155049,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-1052.5;-4750,-1011.005;-4650,-1011.005;-4650,-1052.5)</value>
+    <value>polygon: (-4750,-1047.5;-4750,-1011.005;-4650,-1011.005;-4650,-1047.5)</value>
    </values>
   </item>
   <item>
@@ -155625,7 +155613,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,-2252.5;-4650,-2211.005;-4550,-2211.005;-4550,-2252.5)</value>
+    <value>polygon: (-4650,-2247.5;-4650,-2211.005;-4550,-2211.005;-4550,-2247.5)</value>
    </values>
   </item>
   <item>
@@ -155637,7 +155625,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4650,-2247.5;-4650,-2211.005;-4550,-2211.005;-4550,-2247.5)</value>
+    <value>polygon: (-4650,-2252.5;-4650,-2211.005;-4550,-2211.005;-4550,-2252.5)</value>
    </values>
   </item>
   <item>
@@ -156057,7 +156045,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,-4111.005;-4802.5,-4047.5;-4750,-4047.5;-4750,-4111.005)</value>
+    <value>polygon: (-4797.5,-4111.005;-4797.5,-4052.5;-4750,-4052.5;-4750,-4111.005)</value>
    </values>
   </item>
   <item>
@@ -156069,7 +156057,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,-4111.005;-4797.5,-4052.5;-4750,-4052.5;-4750,-4111.005)</value>
+    <value>polygon: (-4802.5,-4111.005;-4802.5,-4047.5;-4750,-4047.5;-4750,-4111.005)</value>
    </values>
   </item>
   <item>
@@ -156201,7 +156189,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4802.5,-3311.005;-4802.5,-3247.5;-4750,-3247.5;-4750,-3311.005)</value>
+    <value>polygon: (-4797.5,-3311.005;-4797.5,-3252.5;-4750,-3252.5;-4750,-3311.005)</value>
    </values>
   </item>
   <item>
@@ -156213,7 +156201,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4797.5,-3311.005;-4797.5,-3252.5;-4750,-3252.5;-4750,-3311.005)</value>
+    <value>polygon: (-4802.5,-3311.005;-4802.5,-3247.5;-4750,-3247.5;-4750,-3311.005)</value>
    </values>
   </item>
   <item>
@@ -156549,7 +156537,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-4111.005;-4750,-4047.5;-4650,-4047.5;-4650,-4111.005)</value>
+    <value>polygon: (-4750,-4111.005;-4750,-4052.5;-4650,-4052.5;-4650,-4111.005)</value>
    </values>
   </item>
   <item>
@@ -156561,7 +156549,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-4111.005;-4750,-4052.5;-4650,-4052.5;-4650,-4111.005)</value>
+    <value>polygon: (-4750,-4111.005;-4750,-4047.5;-4650,-4047.5;-4650,-4111.005)</value>
    </values>
   </item>
   <item>
@@ -156621,18 +156609,6 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-3711.005;-4750,-3647.5;-4650,-3647.5;-4650,-3711.005)</value>
-   </values>
-  </item>
-  <item>
-   <tags/>
-   <category>design_area</category>
-   <cell>main</cell>
-   <visited>false</visited>
-   <multiplicity>1</multiplicity>
-   <comment/>
-   <image/>
-   <values>
     <value>polygon: (-4750,-3711.005;-4750,-3652.5;-4650,-3652.5;-4650,-3711.005)</value>
    </values>
   </item>
@@ -156645,7 +156621,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (-4750,-3452.5;-4750,-3411.005;-4650,-3411.005;-4650,-3452.5)</value>
+    <value>polygon: (-4750,-3711.005;-4750,-3647.5;-4650,-3647.5;-4650,-3711.005)</value>
    </values>
   </item>
   <item>
@@ -156658,6 +156634,18 @@
    <image/>
    <values>
     <value>polygon: (-4750,-3447.5;-4750,-3411.005;-4650,-3411.005;-4650,-3447.5)</value>
+   </values>
+  </item>
+  <item>
+   <tags/>
+   <category>design_area</category>
+   <cell>main</cell>
+   <visited>false</visited>
+   <multiplicity>1</multiplicity>
+   <comment/>
+   <image/>
+   <values>
+    <value>polygon: (-4750,-3452.5;-4750,-3411.005;-4650,-3411.005;-4650,-3452.5)</value>
    </values>
   </item>
   <item>
@@ -158841,7 +158829,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,-3711.005;4650,-3652.5;4750,-3652.5;4750,-3711.005)</value>
+    <value>polygon: (4650,-3711.005;4650,-3647.5;4750,-3647.5;4750,-3711.005)</value>
    </values>
   </item>
   <item>
@@ -158853,7 +158841,7 @@
    <comment/>
    <image/>
    <values>
-    <value>polygon: (4650,-3711.005;4650,-3647.5;4750,-3647.5;4750,-3711.005)</value>
+    <value>polygon: (4650,-3711.005;4650,-3652.5;4750,-3652.5;4750,-3711.005)</value>
    </values>
   </item>
   <item>
