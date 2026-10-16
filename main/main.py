@@ -7,6 +7,8 @@ Edite só as variáveis desta seção:
 - ``CIRCUITOS_SECUNDARIOS``: um item por circuito incluído, na ordem de
   inclusão. Cada item traz o caminho do GDS (a partir da raiz do
   repositório), a célula e as coordenadas em µm.
+- ``CICLO_NORMAL``: ``True`` executa o processo padrão, com DRC a cada
+  inclusão. ``False`` inclui todos os circuitos de uma vez, sem DRC.
 
 A partir da raiz do repositório:
 
@@ -18,6 +20,7 @@ from __future__ import annotations
 import os
 import subprocess
 import tempfile
+import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 from shutil import which
@@ -41,6 +44,10 @@ CELULA_MAIN = "main"
 DIE_HALF_UM = 4500.0
 CAMADA_SI = (1, 0)
 CAMADA_JANELA = (6, 0)
+
+# True: processo padrão, com DRC a cada inclusão.
+# False: todos os circuitos entram de uma vez, sem DRC.
+CICLO_NORMAL = False
 
 
 class CircuitoSecundario(TypedDict):
@@ -86,7 +93,7 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "nome": "lucas_d5-v2",
         "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d5_Lucas.gds",
         "celula": "TOP",
-        "origem_um": (-4000, -1930),
+        "origem_um": (-3131.00000, -3076.00000),
     },
     {
         "nome": "mariana_d5-v2",
@@ -95,8 +102,92 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
         "origem_um": (-2400, -3400),
     },
+    {
+        "nome": "mariana_d10-v2",
+        "gds": "circuito-mariana-v2/CircuitoMariana10um.gds",
+        "celula": "TOP",
+        # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
+        "origem_um": (-4088.00000, -2610.00000),
+    },
+    {
+        "nome": "eletrico-lucas-mariana",
+        "gds": "circuitos-lucas-v2/circuito-eletrico-lucas-mariana.gds",
+        "celula": "TOP",
+        # Coordenadas absolutas da main. A célula TOP já cobre cerca de
+        # x = -4398 a -1780 µm e y = -4253 a -2448 µm, sobre Lucas d10 e Mariana.
+        "origem_um": (0.0, 0.0),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2390, 1911),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2390, 1513),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2390, 1513-398),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2390, 1513-(2*398)),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2390, 1513-(3*398)),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2390, 1513-(4*398)),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2540, 1513-(5*398)),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2540, 1513-(6*398)),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2540, 1513-(7*398)),
+    },
+    {
+        "nome": "italo-v1",
+        "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
+        "celula": "TOP",
+        # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
+        "origem_um": (2540, 1513-(8*398)),
+    },
 ]
-
 
 # Falhas duras já aceitas no circuito que ocupa a origem da main.
 HOST_HARD = frozenset({"design_area", "si_width"})
@@ -257,6 +348,28 @@ def _nome_unico(prefixo: str) -> str:
     return f"{prefixo}_{_nome_seq}"
 
 
+# O EdgeProcessor do KLayout 0.30.7 às vezes entra em gs.is_reset no
+# merge de um bloco grande (o Ítalo tem ~16 mil polígonos de silício).
+# A mesma região aceita o merge na chamada seguinte.
+_TENTATIVAS_BOOL = 6
+
+
+def _sem_travar(acao, descricao: str):
+    ultimo: RuntimeError | None = None
+    for tentativa in range(1, _TENTATIVAS_BOOL + 1):
+        try:
+            return acao()
+        except RuntimeError as exc:
+            ultimo = exc
+            if "gs.is_reset" not in str(exc) or tentativa == _TENTATIVAS_BOOL:
+                raise
+            print(
+                f"boolean do KLayout travou ({descricao}); "
+                f"tentativa {tentativa + 1} de {_TENTATIVAS_BOOL}"
+            )
+    raise ultimo
+
+
 def _regiao(comp: gf.kf.KCell, camada: tuple[int, int]) -> gf.kdb.Region:
     layout = comp.kcl.layout
     indice = layout.layer(camada[0], camada[1])
@@ -306,9 +419,10 @@ def silicon_overlap(
         caixa.top + 1,
     )
     atual_si = _regiao_na_caixa(atual, CAMADA_SI, margem)
-    bloco_si.merge()
-    atual_si.merge()
-    return (atual_si & bloco_si).count()
+    _sem_travar(bloco_si.merge, f"merge de {bloco.name}")
+    _sem_travar(atual_si.merge, "merge da main")
+    inter = _sem_travar(lambda: atual_si & bloco_si, f"interseção com {bloco.name}")
+    return inter.count()
 
 
 def _copiar_arvore(destino: gf.kdb.Layout, origem: gf.kf.KCell) -> gf.kdb.Cell:
@@ -520,10 +634,14 @@ def parse_lyrdb(path: Path) -> tuple[dict[str, int], dict[str, str]]:
     return counts, descricoes
 
 
-# 3221225477 é 0xC0000005, violação de acesso. O DRC do KLayout 0.30.7
-# com threads(2) derruba o processo no Windows. Uma thread evita isso.
-_TRAVOU = {1, 3221225477, -1073741819}
-_TENTATIVAS_DRC = 3
+# 3221225477 é 0xC0000005, violação de acesso.
+# 3221226356 é 0xC0000374, heap corrompido.
+# O DRC do KLayout 0.30.7 derruba o processo no Windows de forma
+# intermitente, mesmo com uma thread. A pausa deixa o processo morto
+# soltar a memória antes da rodada seguinte.
+_TRAVOU = {1, 3221225477, -1073741819, 3221226356, -1073740940}
+_TENTATIVAS_DRC = 8
+_PAUSA_DRC_S = 2.0
 
 
 def deck_uma_thread() -> Path:
@@ -535,8 +653,34 @@ def deck_uma_thread() -> Path:
     return destino
 
 
+def _cauda_log(log: Path, n: int = 30) -> str:
+    if not log.is_file():
+        return ""
+    linhas = log.read_text(encoding="utf-8", errors="replace").splitlines()
+    return "\n".join(linhas[-n:])
+
+
+def _ler_relatorio(lyrdb: Path, log: Path, codigo: int) -> tuple[dict[str, int], dict[str, str]] | None:
+    """Aceita o .lyrdb se o XML fecha.
+
+    O KLayout às vezes morre depois de gravar o relatório. Código 0, ou um
+    travamento com a linha de gravação no log, ainda vale.
+    """
+    if not lyrdb.is_file():
+        return None
+    if codigo != 0 and codigo not in _TRAVOU:
+        return None
+    if codigo != 0 and "Writing report database" not in _cauda_log(log, 80):
+        return None
+    try:
+        return parse_lyrdb(lyrdb)
+    except ET.ParseError:
+        return None
+
+
 def executar_drc(klayout: Path, gds: Path, lyrdb: Path) -> tuple[dict[str, int], dict[str, str]]:
     deck = deck_uma_thread()
+    log = deck.with_suffix(".log")
     cmd = [
         str(klayout),
         "-b",
@@ -553,17 +697,27 @@ def executar_drc(klayout: Path, gds: Path, lyrdb: Path) -> tuple[dict[str, int],
         if lyrdb.exists():
             lyrdb.unlink()
         print("DRC", gds.name, "->", lyrdb.name)
-        proc = subprocess.run(cmd, check=False)
+        with log.open("w", encoding="utf-8", errors="replace") as saida:
+            proc = subprocess.run(cmd, check=False, stdout=saida, stderr=subprocess.STDOUT)
         ultimo = proc.returncode
-        if ultimo == 0 and lyrdb.is_file():
-            return parse_lyrdb(lyrdb)
+        lido = _ler_relatorio(lyrdb, log, ultimo)
+        if lido is not None:
+            if ultimo != 0:
+                print(
+                    f"KLayout encerrou com código {ultimo} "
+                    "depois de gravar o relatório; relatório aceito"
+                )
+            return lido
         if ultimo not in _TRAVOU or tentativa == _TENTATIVAS_DRC:
             break
         print(
             f"KLayout encerrou com código {ultimo}; "
             f"tentativa {tentativa + 1} de {_TENTATIVAS_DRC}"
         )
-    raise RuntimeError(f"KLayout DRC saiu com código {ultimo}")
+        time.sleep(_PAUSA_DRC_S)
+    cauda = _cauda_log(log)
+    detalhe = f"\n{cauda}" if cauda else ""
+    raise RuntimeError(f"KLayout DRC saiu com código {ultimo}{detalhe}")
 
 
 def falhas_duras(counts: dict[str, int], descricoes: dict[str, str]) -> dict[str, int]:
@@ -648,23 +802,25 @@ def rodar_drc(
     return relatar(titulo, counts, descricoes, txt, baseline)
 
 
-def main() -> None:
-    if not DECK.is_file():
-        raise FileNotFoundError(f"deck DRC ausente: {DECK}")
-    SAIDA.mkdir(parents=True, exist_ok=True)
-    limpar_relatorios()
-    klayout = localizar_klayout()
-
-    host = carregar_celula(gds_lucivaldo(), CELULA_LUCIVALDO)
-    assert_no_layer6(host)
-
-    inclusoes: list[tuple[gf.kf.KCell, tuple[float, float]]] = []
+def _carregar_secundarios() -> list[tuple[str, gf.kf.KCell, tuple[float, float]]]:
     secundarios: list[tuple[str, gf.kf.KCell, tuple[float, float]]] = []
     for item in CIRCUITOS_SECUNDARIOS:
         nome, gds, celula, origem = ler_secundario(item)
         bloco = carregar_celula(gds, celula)
         secundarios.append((nome, bloco, origem))
+    return secundarios
 
+
+def _ciclo_normal(
+    host: gf.kf.KCell,
+    secundarios: list[tuple[str, gf.kf.KCell, tuple[float, float]]],
+) -> gf.kf.KCell:
+    if not DECK.is_file():
+        raise FileNotFoundError(f"deck DRC ausente: {DECK}")
+    limpar_relatorios()
+    klayout = localizar_klayout()
+
+    inclusoes: list[tuple[gf.kf.KCell, tuple[float, float]]] = []
     indice = 0
     main_comp = montar(host, inclusoes)
     assert_no_layer6(main_comp)
@@ -692,6 +848,35 @@ def main() -> None:
     assert_no_layer6(main_comp)
     gravar_gds(main_comp)
     rodar_drc(klayout, "main final", "main", indice, baseline)
+    return main_comp
+
+
+def _ciclo_direto(
+    host: gf.kf.KCell,
+    secundarios: list[tuple[str, gf.kf.KCell, tuple[float, float]]],
+) -> gf.kf.KCell:
+    """Inclui todos os circuitos de uma vez, sem rodar o DRC."""
+    print("CICLO_NORMAL = False: inclusão direta, sem DRC")
+    inclusoes: list[tuple[gf.kf.KCell, tuple[float, float]]] = []
+    for nome, bloco, origem in secundarios:
+        atual = montar(host, inclusoes)
+        conferir_inclusao(atual, bloco, origem, nome)
+        inclusoes.append((bloco, origem))
+    main_comp = montar(host, inclusoes)
+    assert_no_layer6(main_comp)
+    gravar_gds(main_comp)
+    return main_comp
+
+
+def main() -> None:
+    SAIDA.mkdir(parents=True, exist_ok=True)
+    host = carregar_celula(gds_lucivaldo(), CELULA_LUCIVALDO)
+    assert_no_layer6(host)
+    secundarios = _carregar_secundarios()
+    if CICLO_NORMAL:
+        main_comp = _ciclo_normal(host, secundarios)
+    else:
+        main_comp = _ciclo_direto(host, secundarios)
     gravar_oas(main_comp)
     gravar_png()
 
