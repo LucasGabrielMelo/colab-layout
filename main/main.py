@@ -57,9 +57,7 @@ class CircuitoSecundario(TypedDict):
     origem_um: tuple[float, float]
 
 
-# Cada pessoa acrescenta o próprio circuito nesta lista.
-CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
-    {
+"""{
         "nome": "isa-jose-v1",
         "gds": "circuito-isa-jose-v1/mzi_O4_2estagios_gc_array.gds",
         "celula": "MZI_O4_GC7",
@@ -83,18 +81,27 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         # Coordenadas absolutas da main. O GDS sai de roteamento_eletrico.py.
         "origem_um": (0.0, 0.0),
     },
+"""
+# Cada pessoa acrescenta o próprio circuito nesta lista.
+CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
+    {
+        "nome": "isa-jose-v1",
+        "gds": "circuito-isa-jose-v1/circuito_isa_jose.gds",
+        "celula": "circuito_isa_jose",
+        "origem_um": (0,0),
+    },
     {
         "nome": "lucas_d10-v2",
         "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d10_Lucas.gds",
         "celula": "TOP",
         "origem_um": (-4000, -4400),
     },
-    {
-        "nome": "lucas_d5-v2",
-        "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d5_Lucas.gds",
-        "celula": "TOP",
-        "origem_um": (-3131.00000, -3076.00000),
-    },
+    #{
+    #    "nome": "lucas_d5-v2",
+    #    "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d5_Lucas.gds",
+    #    "celula": "TOP",
+    #    "origem_um": (-3131.00000, -3076.00000),
+    #},
     {
         "nome": "mariana_d5-v2",
         "gds": "circuito-mariana-v2/CircuitoMariana.gds",
@@ -102,13 +109,13 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
         "origem_um": (-2400, -3400),
     },
-    {
-        "nome": "mariana_d10-v2",
-        "gds": "circuito-mariana-v2/CircuitoMariana10um.gds",
-        "celula": "TOP",
-        # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
-        "origem_um": (-4088.00000, -2610.00000),
-    },
+    # {
+    #     "nome": "mariana_d10-v2",
+    #     "gds": "circuito-mariana-v2/CircuitoMariana10um.gds",
+    #     "celula": "TOP",
+    #     # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
+    #     "origem_um": (-4088.00000, -2610.00000),
+    # },
     {
         "nome": "eletrico-lucas-mariana",
         "gds": "circuitos-lucas-v2/circuito-eletrico-lucas-mariana.gds",
@@ -122,72 +129,74 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2390, 1911),
+        "origem_um": (2390, -1690.00000 + 9*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2390, 1513),
+        "origem_um": (2390, -1690.00000 + 8*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2390, 1513-398),
+        "origem_um": (2390, -1690.00000 + 7*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2390, 1513-(2*398)),
+        "origem_um": (2390, -1690.00000 + 6*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2390, 1513-(3*398)),
+        "origem_um": (2390, -1690.00000 + 5*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2390, 1513-(4*398)),
+        "origem_um": (2390, -1690.00000 + 4*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2540, 1513-(5*398)),
+        "origem_um": (2540, -1690.00000 + 3*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2540, 1513-(6*398)),
+        "origem_um": (2540, -1690.00000 + 2*400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2540, 1513-(7*398)),
+        "origem_um": (2540, -1690.00000 + 400),
     },
     {
         "nome": "italo-v1",
         "gds": "circuito-italo-v1/Nanotools_Italo_SWG.gds",
         "celula": "TOP",
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
-        "origem_um": (2540, 1513-(8*398)),
+        "origem_um": (2540, -1690.00000),
     },
 ]
+
+# -1690.00000
 
 # Falhas duras já aceitas no circuito que ocupa a origem da main.
 HOST_HARD = frozenset({"design_area", "si_width"})
