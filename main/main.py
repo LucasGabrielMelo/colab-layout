@@ -209,6 +209,12 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "celula": "TOP",
         "origem_um": (0.0, 0.0),
     },
+    {
+        "nome": "isa-jose-hyb",
+        "gds": "circuito-isa-jose-v1/hybrid90_ydc_gc_pack.gds",
+        "celula": "TOP",
+        "origem_um": (-3158, 2200),
+    },
 ]
 
 # -1690.00000
