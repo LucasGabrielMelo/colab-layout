@@ -8,7 +8,10 @@ Edite só as variáveis desta seção:
   inclusão. Cada item traz o caminho do GDS (a partir da raiz do
   repositório), a célula e as coordenadas em µm.
 - ``CICLO_NORMAL``: ``True`` executa o processo padrão, com DRC a cada
-  inclusão. ``False`` inclui todos os circuitos de uma vez, sem DRC.
+  inclusão. ``False`` inclui todos os circuitos de uma vez, sem DRC
+  intermediário.
+- ``DRC_FINAL``: com ``CICLO_NORMAL = False``, ``True`` roda um único
+  DRC no layout completo, depois que todos os circuitos entraram.
 
 A partir da raiz do repositório:
 
@@ -46,8 +49,10 @@ CAMADA_SI = (1, 0)
 CAMADA_JANELA = (6, 0)
 
 # True: processo padrão, com DRC a cada inclusão.
-# False: todos os circuitos entram de uma vez, sem DRC.
+# False: todos os circuitos entram de uma vez, sem DRC intermediário.
 CICLO_NORMAL = False
+# Vale com CICLO_NORMAL = False. True roda um único DRC no layout completo.
+DRC_FINAL = True
 
 
 class CircuitoSecundario(TypedDict):
@@ -968,12 +973,25 @@ def _ciclo_normal(
     return main_comp
 
 
+def _drc_final() -> None:
+    """Um DRC no GDS completo, sem a rodada de cada inclusão."""
+    if not DECK.is_file():
+        raise FileNotFoundError(f"deck DRC ausente: {DECK}")
+    limpar_relatorios()
+    klayout = localizar_klayout()
+    print("DRC_FINAL: um DRC no layout completo")
+    rodar_drc(klayout, "main final", "main", 0, None)
+
+
 def _ciclo_direto(
     host: gf.kf.KCell,
     secundarios: list[tuple[str, gf.kf.KCell, tuple[float, float]]],
 ) -> gf.kf.KCell:
-    """Inclui todos os circuitos de uma vez, sem rodar o DRC."""
-    print("CICLO_NORMAL = False: inclusão direta, sem DRC")
+    """Inclui todos os circuitos de uma vez, sem DRC a cada inclusão."""
+    if DRC_FINAL:
+        print("CICLO_NORMAL = False: inclusão direta; DRC só no layout completo")
+    else:
+        print("CICLO_NORMAL = False: inclusão direta, sem DRC")
     inclusoes: list[tuple[gf.kf.KCell, tuple[float, float]]] = []
     for nome, bloco, origem in secundarios:
         atual = montar(host, inclusoes)
@@ -994,6 +1012,8 @@ def main() -> None:
         main_comp = _ciclo_normal(host, secundarios)
     else:
         main_comp = _ciclo_direto(host, secundarios)
+        if DRC_FINAL:
+            _drc_final()
     gravar_oas(main_comp)
     gravar_png()
 
