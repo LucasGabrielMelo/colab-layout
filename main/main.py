@@ -57,6 +57,11 @@ class CircuitoSecundario(TypedDict):
     origem_um: tuple[float, float]
 
 
+class OrigemDrc(TypedDict):
+    contagens: dict[str, int]
+    design_area_um2: float
+
+
 """{
         "nome": "isa-jose-v1",
         "gds": "circuito-isa-jose-v1/mzi_O4_2estagios_gc_array.gds",
@@ -96,12 +101,6 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "celula": "TOP",
         "origem_um": (-4000, -4400),
     },
-    #{
-    #    "nome": "lucas_d5-v2",
-    #    "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d5_Lucas.gds",
-    #    "celula": "TOP",
-    #    "origem_um": (-3131.00000, -3076.00000),
-    #},
     {
         "nome": "mariana_d5-v2",
         "gds": "circuito-mariana-v2/CircuitoMariana.gds",
@@ -109,13 +108,6 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
         "origem_um": (-2400, -3400),
     },
-    # {
-    #     "nome": "mariana_d10-v2",
-    #     "gds": "circuito-mariana-v2/CircuitoMariana10um.gds",
-    #     "celula": "TOP",
-    #     # Aviso de Lucas: Nunca mecha na posição y do de Mariana, o x pode ser modificado a vontade
-    #     "origem_um": (-4088.00000, -2610.00000),
-    # },
     {
         "nome": "eletrico-lucas-mariana",
         "gds": "circuitos-lucas-v2/circuito-eletrico-lucas-mariana.gds",
@@ -194,6 +186,24 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         # Célula TOP de cerca de (-889, -138) a (733, 142) µm.
         "origem_um": (2540, -1690.00000),
     },
+    {
+        "nome": "lucas_d5-v2",
+        "gds": "circuitos-lucas-v2/MZI_50GHZ_2_stages_d5_Lucas.gds",
+        "celula": "TOP",
+        "origem_um": (-4100, 2850),
+    },
+    {
+        "nome": "mariana_d10-v2",
+        "gds": "circuito-mariana-v2/CircuitoMariana10um.gds",
+        "celula": "TOP",
+        "origem_um": (-2400, 4200),
+    },
+    {
+        "nome": "eletrico-lucas-mariana-2",
+        "gds": "circuitos-lucas-v2/circuito-eletrico-lucas-mariana-2.gds",
+        "celula": "TOP",
+        "origem_um": (0.0, 0.0),
+    },
 ]
 
 # -1690.00000
@@ -201,6 +211,10 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
 # Falhas duras já aceitas no circuito que ocupa a origem da main.
 HOST_HARD = frozenset({"design_area", "si_width"})
 BASELINE_CATS = ("design_area", "si_width", "si_space")
+# O .lyrdb grava coordenadas em µm. A união usa a mesma grade do GDS.
+_DBU_RELATORIO = 0.001
+# Abaixo disto, a diferença de área é ruído de grade, não metal novo.
+_TOLERANCIA_DESIGN_UM2 = 1.0
 METAL_CLEAR = (
     "tiw_width",
     "tiw_space",
@@ -628,7 +642,60 @@ def conferir_inclusao(
         )
 
 
-def parse_lyrdb(path: Path) -> tuple[dict[str, int], dict[str, str]]:
+def _fmt_um2(area: float) -> str:
+    arred = round(area)
+    if abs(area - arred) < 0.05:
+        return str(int(arred))
+    return f"{area:.1f}"
+
+
+def _vertices_um(texto: str) -> list[tuple[float, float]]:
+    if not texto.startswith("polygon:"):
+        return []
+    inicio = texto.find("(")
+    fim = texto.rfind(")")
+    if inicio < 0 or fim <= inicio:
+        return []
+    pontos: list[tuple[float, float]] = []
+    for par in texto[inicio + 1 : fim].split(";"):
+        par = par.strip()
+        if not par:
+            continue
+        x_txt, y_txt = par.split(",", 1)
+        pontos.append((float(x_txt), float(y_txt)))
+    return pontos
+
+
+def _area_design_area(root: ET.Element) -> float:
+    """Área da união dos marcadores design_area, em µm².
+
+    O deck corta o mesmo metal em ladrilhos de 100 µm. A contagem sobe
+    quando a caixa do layout muda; a união permanece.
+    """
+    reg = gf.kdb.Region()
+    escala = 1.0 / _DBU_RELATORIO
+    for item in root.findall("./items/item"):
+        if item.findtext("category") != "design_area":
+            continue
+        for valor in item.findall("./values/value"):
+            pontos = _vertices_um(valor.text or "")
+            if len(pontos) < 3:
+                continue
+            reg.insert(
+                gf.kdb.Polygon(
+                    [
+                        gf.kdb.Point(
+                            int(round(x * escala)),
+                            int(round(y * escala)),
+                        )
+                        for x, y in pontos
+                    ]
+                )
+            )
+    return float(reg.area()) * _DBU_RELATORIO * _DBU_RELATORIO
+
+
+def parse_lyrdb(path: Path) -> tuple[dict[str, int], dict[str, str], float]:
     root = ET.parse(path).getroot()
     descricoes: dict[str, str] = {}
     for cat in root.findall("./categories/category"):
@@ -640,7 +707,7 @@ def parse_lyrdb(path: Path) -> tuple[dict[str, int], dict[str, str]]:
         nome = item.findtext("category")
         if nome:
             counts[nome] = counts.get(nome, 0) + 1
-    return counts, descricoes
+    return counts, descricoes, _area_design_area(root)
 
 
 # 3221225477 é 0xC0000005, violação de acesso.
@@ -669,7 +736,9 @@ def _cauda_log(log: Path, n: int = 30) -> str:
     return "\n".join(linhas[-n:])
 
 
-def _ler_relatorio(lyrdb: Path, log: Path, codigo: int) -> tuple[dict[str, int], dict[str, str]] | None:
+def _ler_relatorio(
+    lyrdb: Path, log: Path, codigo: int
+) -> tuple[dict[str, int], dict[str, str], float] | None:
     """Aceita o .lyrdb se o XML fecha.
 
     O KLayout às vezes morre depois de gravar o relatório. Código 0, ou um
@@ -687,7 +756,9 @@ def _ler_relatorio(lyrdb: Path, log: Path, codigo: int) -> tuple[dict[str, int],
         return None
 
 
-def executar_drc(klayout: Path, gds: Path, lyrdb: Path) -> tuple[dict[str, int], dict[str, str]]:
+def executar_drc(
+    klayout: Path, gds: Path, lyrdb: Path
+) -> tuple[dict[str, int], dict[str, str], float]:
     deck = deck_uma_thread()
     log = deck.with_suffix(".log")
     cmd = [
@@ -745,14 +816,17 @@ def relatar(
     titulo: str,
     counts: dict[str, int],
     descricoes: dict[str, str],
+    area_design: float,
     path: Path,
-    baseline: dict[str, int] | None,
-) -> dict[str, int]:
+    baseline: OrigemDrc | None,
+) -> OrigemDrc:
     total = sum(counts.values())
     print(f"DRC {titulo}: {total} marcadores")
     for cat in sorted(counts):
         if counts[cat]:
             print(f"  {cat} = {counts[cat]}")
+    if counts.get("design_area"):
+        print(f"  design_area área = {_fmt_um2(area_design)} µm²")
     extra = {
         cat: n
         for cat, n in falhas_duras(counts, descricoes).items()
@@ -762,15 +836,33 @@ def relatar(
     for cat in sorted(counts):
         if counts[cat]:
             linhas.append(f"{cat} = {counts[cat]}")
+    if counts.get("design_area"):
+        linhas.append(f"design_area área = {_fmt_um2(area_design)} µm²")
     linhas.append("")
     linhas.append("falha dura fora da origem: " + (str(extra) if extra else "nenhuma"))
+    origem = {cat: counts.get(cat, 0) for cat in BASELINE_CATS}
     if baseline is None:
+        linhas.append(
+            f"baseline design_area: {origem['design_area']} marcadores, "
+            f"{_fmt_um2(area_design)} µm²"
+        )
         for cat in BASELINE_CATS:
-            linhas.append(f"baseline {cat}: {counts.get(cat, 0)}")
+            if cat == "design_area":
+                continue
+            linhas.append(f"baseline {cat}: {origem[cat]}")
     else:
-        for cat, expected in baseline.items():
+        linhas.append(
+            "baseline design_area: "
+            f"medido {origem['design_area']} marcadores, {_fmt_um2(area_design)} µm²; "
+            f"origem {baseline['contagens'].get('design_area', 0)} marcadores, "
+            f"{_fmt_um2(baseline['design_area_um2'])} µm²"
+        )
+        for cat in BASELINE_CATS:
+            if cat == "design_area":
+                continue
             linhas.append(
-                f"baseline {cat}: medido {counts.get(cat, 0)}, origem {expected}"
+                f"baseline {cat}: medido {origem[cat]}, "
+                f"origem {baseline['contagens'].get(cat, 0)}"
             )
     metal = {cat: counts.get(cat, 0) for cat in METAL_CLEAR if counts.get(cat, 0)}
     linhas.append("metal: " + (str(metal) if metal else "sem erro"))
@@ -781,13 +873,29 @@ def relatar(
     if metal:
         raise RuntimeError(f"DRC {titulo}: metal {metal}")
     if baseline is not None:
-        for cat, expected in baseline.items():
-            got = counts.get(cat, 0)
+        if abs(area_design - baseline["design_area_um2"]) > _TOLERANCIA_DESIGN_UM2:
+            raise RuntimeError(
+                f"DRC {titulo}: design_area = {_fmt_um2(area_design)} µm², "
+                f"a main do Lucivaldo tinha {_fmt_um2(baseline['design_area_um2'])} µm²"
+            )
+        for cat in BASELINE_CATS:
+            if cat == "design_area":
+                continue
+            got = origem[cat]
+            expected = baseline["contagens"].get(cat, 0)
             if got != expected:
                 raise RuntimeError(
                     f"DRC {titulo}: {cat} = {got}, a main do Lucivaldo tinha {expected}"
                 )
-    return {cat: counts.get(cat, 0) for cat in BASELINE_CATS}
+        n_med = origem["design_area"]
+        n_ori = baseline["contagens"].get("design_area", 0)
+        if n_med != n_ori:
+            print(
+                f"  design_area segue: {n_med} marcadores, "
+                f"área {_fmt_um2(area_design)} µm² "
+                f"(origem {n_ori} marcadores, mesma área)"
+            )
+    return {"contagens": origem, "design_area_um2": area_design}
 
 
 def limpar_relatorios() -> None:
@@ -802,13 +910,13 @@ def rodar_drc(
     titulo: str,
     rotulo: str,
     indice: int,
-    baseline: dict[str, int] | None,
-) -> dict[str, int]:
+    baseline: OrigemDrc | None,
+) -> OrigemDrc:
     base = f"{indice:02d}_DRC_{sanitizar(rotulo)}"
     txt = RELATORIOS / f"{base}.txt"
     lyrdb = RELATORIOS / f"{base}.lyrdb"
-    counts, descricoes = executar_drc(klayout, MAIN_GDS, lyrdb)
-    return relatar(titulo, counts, descricoes, txt, baseline)
+    counts, descricoes, area_design = executar_drc(klayout, MAIN_GDS, lyrdb)
+    return relatar(titulo, counts, descricoes, area_design, txt, baseline)
 
 
 def _carregar_secundarios() -> list[tuple[str, gf.kf.KCell, tuple[float, float]]]:
