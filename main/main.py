@@ -211,12 +211,6 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "origem_um": (0.0, 0.0),
     },
     {
-        "nome": "isa-jose-hyb",
-        "gds": "circuito-isa-jose-v1/hybrid90_ydc_gc_pack.gds",
-        "celula": "TOP",
-        "origem_um": (-3158, 2200),
-    },
-    {
         "nome": "tag",
         "gds": "tag-layout/tags_chip_Lucivaldo.gds",
         "celula": "tags_chip_Lucivaldo",
@@ -226,6 +220,12 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "nome": "SEM",
         "gds": "SEM\SEM_chip_Lucivaldo.gds",
         "celula": "SEM_chip_Lucivaldo",
+        "origem_um": (0, 0),
+    },
+    {
+        "nome": "SEM_DCs",
+        "gds": "circuito-isa-jose-v1\SEM_DCs.gds",
+        "celula": "TOP",
         "origem_um": (0, 0),
     },
 ]

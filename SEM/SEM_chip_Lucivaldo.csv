@@ -1,6 +1,3 @@
 SEM, WIDTH, COORDX, COORDY, LABEL
-LF-YB, 40, 2227, -3261, Y-branch do filtro lattice
-LF-YB, 20, 2227, -3261, Y-branch do filtro lattice
-LF-YB, 12, 2227, -3261, Y-branch do filtro lattice
-LF-YB, 8, 2227, -3261, Y-branch do filtro lattice
-LF-YB, 4, 2227, -3261, Y-branch do filtro lattice
+I0-DC1, 40, 2672.373, -1935.09, DC 16p24 um
+I0-DC2, 40, 3434.955, -1935.711, DC 18p09 um
