@@ -41,7 +41,8 @@ ASPECTO = 4.0 / 3.0
 COLUNAS = ("SEM", "WIDTH", "COORDX", "COORDY")
 
 PASTA = Path(__file__).resolve().parent
-ARQUIVOS_CSV = {PASTA / "SEM_chip_Lucivaldo.csv"}
+ARQUIVOS_CSV = {PASTA / "SEM_chip_Lucivaldo.csv",
+PASTA / "SEM_chip_Wender.csv"}
 
 tech = siepic.ebeam()
 pf.config.default_technology = tech

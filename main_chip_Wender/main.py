@@ -80,11 +80,16 @@ class OrigemDrc(TypedDict):
 # A origem (1452.190, 2959.940) reproduz esse mesmo arranjo no layout base.
 CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
     {
+        "nome": "SEM",
+        "gds": "SEM\SEM_chip_Wender.gds",
+        "celula": "SEM_chip_Wender",
+        "origem_um": (0, 0),
+    },
+    {
         "nome": "isa-jose-hyb-pack2",
-        "gds": "main_chip_Wender/isa-jose/hybrid90_ydc_gc_pack2.gds",
+        "gds": "main_chip_Wender\isa-jose\hybrid90_y_gc_pack.gds",
         "celula": "TOP",
-        # Célula TOP de cerca de (-817, -2294) a (2580, 0) µm.
-        "origem_um": (1452.190, 2959.940),
+        "origem_um": (640, 3000),
     },
     {
         "nome": "leo-lattice",
