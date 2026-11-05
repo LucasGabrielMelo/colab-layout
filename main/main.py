@@ -228,6 +228,31 @@ CIRCUITOS_SECUNDARIOS: list[CircuitoSecundario] = [
         "celula": "TOP",
         "origem_um": (0, 0),
     },
+    {
+        "nome": "lucas_mzi_1e_1",
+        "gds": "circuitos-lucas-v2/MZI_1_stage_Lucas.gds",
+        "celula": "TOP",
+        "origem_um": (-1120, -2857.655),
+    },
+    {
+        "nome": "lucas_mzi_1e_2",
+        "gds": "circuitos-lucas-v2/MZI_1_stage_Lucas.gds",
+        "celula": "TOP",
+        "origem_um": (-1120, -3157.655),
+    },
+    {
+        "nome": "mariana_mzi_1e_1",
+        "gds": "circuito-mariana-v2/MZI_1_stage_Mariana.gds",
+        "celula": "TOP",
+        "origem_um": (-1120, -3457.655),
+    },
+    {
+        "nome": "mariana_mzi_1e_2",
+        "gds": "circuito-mariana-v2/MZI_1_stage_Mariana.gds",
+        "celula": "TOP",
+        "origem_um": (-1120, -3757.655),
+    },
+
 ]
 
 # -1690.00000 
